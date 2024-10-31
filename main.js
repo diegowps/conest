@@ -15,6 +15,12 @@ function createWindow() {
     Menu.setApplicationMenu(Menu.buildFromTemplate(template))
 
     win.loadFile('./src/views/index.html')
+
+    //botões
+    ipcMain.on('open-client', () => {
+        clientWindow()
+    })
+
 }
 
 // Janela sobre
@@ -44,6 +50,25 @@ function aboutWindow() {
         }
     })
 
+}
+// Janela clientes
+function clientWindow() {
+    const main = BrowserWindow.getFocusedWindow()
+    let client
+    if (main) {
+        client = new BrowserWindow({
+            width: 800,
+            height: 600,
+            autoHideMenuBar: true,
+            parent: main,
+            modal: true,
+            webPreferences: {
+                preload: path.join(__dirname, 'preload.js')
+            }
+        })
+    }
+
+    client.loadFile('./src/views/sobre.html')
 }
 
 app.whenReady().then(() => {

@@ -1,2 +1,2 @@
 # conest
-Sistema desktop electron node js
+Sistema para controle de estoque no comércio de bens e serviços.

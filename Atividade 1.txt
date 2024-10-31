@@ -14,3 +14,12 @@ Arquivo           Zoom                                   Ajuda
 8) Implementar no menu ajuda o link para o repositório e tela Sobre
 9) Implementar o bootstrap no Electron
 10) Na página principal criar botões linkando as janelas Clientes, Fornecedores, Produtos e Relatórios.
+
+
+incluir botoes
+
+Clientes
+fornecedores
+produtos
+Relatórios
+

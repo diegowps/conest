@@ -1,0 +1,22 @@
+{
+  "name": "conest",
+  "version": "1.0.0",
+  "description": "Sistema para gestão de estoque no comércio de bens e serviços.",
+  "main": "main.js",
+  "scripts": {
+    "start": "electron ."
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/amanda-nogueira/conest.git"
+  },
+  "author": "Amanda Nogueira",
+  "license": "MIT",
+  "bugs": {
+    "url": "https://github.com/amanda-nogueira/conest/issues"
+  },
+  "homepage": "https://github.com/amanda-nogueira/conest#readme",
+  "devDependencies": {
+    "electron": "^33.0.2"
+  }
+}
