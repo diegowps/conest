@@ -1,39 +1,46 @@
-const { app, BrowserWindow, Menu, shell, ipcMain } = require('electron/main')
+const { app, BrowserWindow, nativeTheme, Menu, shell, ipcMain } = require('electron/main')
 const path = require('node:path')
 
-// janela principal
 let win
 function createWindow() {
+    nativeTheme.themeSource = 'light'
     win = new BrowserWindow({
-        width: 800,
-        height: 600,
+        width: 1010,
+        height: 700,
         webPreferences: {
             preload: path.join(__dirname, 'preload.js')
         }
     })
-
     Menu.setApplicationMenu(Menu.buildFromTemplate(template))
-
     win.loadFile('./src/views/index.html')
 
-    //botões
-    ipcMain.on('open-client', () => {
-        clientWindow()
+    //Botões
+    ipcMain.on('open-client', () => {      
+        clientWindow()  
     })
-
+    ipcMain.on('open-supplier', () =>{
+        supplierWindow()
+    })
+    ipcMain.on('open-product', () => {
+        productWindow()
+    })
+    ipcMain.on('open-report', () => {
+        reportWindow()
+    })
 }
 
-// Janela sobre
 function aboutWindow() {
+    nativeTheme.themeSource = 'light'
     const main = BrowserWindow.getFocusedWindow()
     let about
     if (main) {
         about = new BrowserWindow({
-            width: 360,
-            height: 210,
+            width: 320,
+            height: 240,
             autoHideMenuBar: true,
             resizable: false,
             minimizable: false,
+            //titleBarStyle: 'hidden' // esconder a barra de estilo (ex.: totem de auto atendimento)
             parent: main,
             modal: true,
             webPreferences: {
@@ -41,18 +48,18 @@ function aboutWindow() {
             }
         })
     }
-
     about.loadFile('./src/views/sobre.html')
 
-    ipcMain.on('close-about', () => {        
+    ipcMain.on('close-about', () => {
+        console.log('Recebi a mensagem close-about')
         if (about && !about.isDestroyed()) {
             about.close()
         }
     })
-
 }
-// Janela clientes
+
 function clientWindow() {
+    nativeTheme.themeSource = 'light'
     const main = BrowserWindow.getFocusedWindow()
     let client
     if (main) {
@@ -67,13 +74,68 @@ function clientWindow() {
             }
         })
     }
+    client.loadFile('./src/views/clientes.html')
+}
 
-    client.loadFile('./src/views/sobre.html')
+function supplierWindow() {
+    nativeTheme.themeSource = 'light'
+    const main = BrowserWindow.getFocusedWindow()
+    let supplier
+    if (main) {
+        supplier = new BrowserWindow({
+            width: 800,
+            height: 600,
+            autoHideMenuBar: true,
+            parent: main,
+            modal: true,
+            webPreferences: {
+                preload: path.join(__dirname, 'preload.js')
+            }
+        })
+    }
+    supplier.loadFile('./src/views/fornecedores.html')
+}
+
+function productWindow() {
+    nativeTheme.themeSource = 'light'
+    const main = BrowserWindow.getFocusedWindow()
+    let product
+    if (main) {
+        product = new BrowserWindow({
+            width: 800,
+            height: 600,
+            autoHideMenuBar: true,
+            parent: main,
+            modal: true,
+            webPreferences: {
+                preload: path.join(__dirname, 'preload.js')
+            }
+        })
+    }
+    product.loadFile('./src/views/produtos.html')
+}
+
+function reportWindow() {
+    nativeTheme.themeSource = 'light'
+    const main = BrowserWindow.getFocusedWindow()
+    let report
+    if (main) {
+        report = new BrowserWindow({
+            width: 800,
+            height: 600,
+            autoHideMenuBar: true,
+            parent: main,
+            modal: true,
+            webPreferences: {
+                preload: path.join(__dirname, 'preload.js')
+            }
+        })
+    }
+    report.loadFile('./src/views/relatorios.html')
 }
 
 app.whenReady().then(() => {
     createWindow()
-
     app.on('activate', () => {
         if (BrowserWindow.getAllWindows().length === 0) {
             createWindow()
@@ -92,29 +154,28 @@ const template = [
         label: 'Arquivo',
         submenu: [
             {
-                type: 'separator'
-            },
-            {
                 label: 'Sair',
                 accelerator: 'Alt+F4',
                 click: () => app.quit()
             }
         ]
     },
-
     {
         label: 'Zoom',
         submenu: [
             {
                 label: 'Aplicar zoom',
+                accelerator: 'Ctrl++',
                 role: 'zoomIn'
             },
             {
-                label: 'Reduzir',
+                label: 'Reduzir zoom',
+                accelerator: 'Ctrl+-',
                 role: 'zoomOut'
             },
             {
                 label: 'Restaurar o zoom padrão',
+                accelerator: 'Ctrl+0',
                 role: 'resetZoom'
             }
         ]
@@ -124,7 +185,7 @@ const template = [
         submenu: [
             {
                 label: 'Repositório',
-                click: () => shell.openExternal('https://github.com/professorjosedeassis/conestv3')
+                click: () => shell.openExternal('https://github.com/amanda-nogueira')
             },
             {
                 label: 'Sobre',
