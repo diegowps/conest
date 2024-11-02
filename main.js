@@ -112,7 +112,7 @@ function productWindow() {
             }
         })
     }
-    product.loadFile('./src/views/produtos.html')
+    product.loadFile('./src/views/estoque.html')
 }
 
 function reportWindow() {
@@ -132,6 +132,25 @@ function reportWindow() {
         })
     }
     report.loadFile('./src/views/relatorios.html')
+}
+
+function reportWindow() {
+    nativeTheme.themeSource = 'light'
+    const main = BrowserWindow.getFocusedWindow()
+    let report
+    if (main) {
+        report = new BrowserWindow({
+            width: 800,
+            height: 600,
+            autoHideMenuBar: true,
+            parent: main,
+            modal: true,
+            webPreferences: {
+                preload: path.join(__dirname, 'preload.js')
+            }
+        })
+    }
+    report.loadFile('./src/views/estoque.html')
 }
 
 app.whenReady().then(() => {

@@ -8,14 +8,14 @@
   },
   "repository": {
     "type": "git",
-    "url": "git+https://github.com/amanda-nogueira/conest.git"
+    "url": "git+https://github.com/diegowps/conest.git"
   },
-  "author": "Amanda Nogueira",
+  "author": "Diego",
   "license": "MIT",
   "bugs": {
-    "url": "https://github.com/amanda-nogueira/conest/issues"
+    "url": "https://github.com/diegowps/conest/issues"
   },
-  "homepage": "https://github.com/amanda-nogueira/conest#readme",
+  "homepage": "https://github.com/diegowps/conest#readme",
   "devDependencies": {
     "electron": "^33.0.2"
   }
