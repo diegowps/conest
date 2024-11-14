@@ -26,3 +26,13 @@ function obterData(){
     return data.toLocaleDateString('pt-BR', options)
 }
 document.getElementById('dataAtual').innerHTML = obterData()
+
+//icone de status do banco de dados
+api.dbMessage(event, message) => {
+    //validação e troca do icone de conexao
+    if (message === 'connected') {
+        document.getElementById('iconDB').src = '../public/img/dbon.png'
+    } else {
+        document.getElementById('iconDB').src = '../public/img/dboff.png'
+    }
+}
