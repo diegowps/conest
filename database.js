@@ -46,3 +46,7 @@ const dbConnected = async () => {
             }
         }
     }
+
+    // exportar as funções de conexão e desconexão
+    //exportar  para a main as funções desejadas
+    module.exports = { dbConnected, desconectar }
