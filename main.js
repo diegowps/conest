@@ -172,9 +172,16 @@ app.whenReady().then(() => {
         /*modelo mvc camadas*/
 
         dbcon = await dbConnected()
+        //enviar ao renderenzador a mensagem de conexao para trocar o icone de conexao status banco de dados
+        //enviar mensagem para a janela principal
+        event.reply('db-connected', 'Conectado ao banco de dados')
         console.log('Conectado ao banco de dados')
     })
-
+//desconectar do banco ao encerrar a aplicação
+    app.on('before-quit', async () => {
+            await desconectar(dbcon)
+            console.log('Desconectado do banco de dados')
+    })
 
     app.on('activate', () => {
         if (BrowserWindow.getAllWindows().length === 0) {
