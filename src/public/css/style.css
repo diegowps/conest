@@ -5,3 +5,35 @@
     border: 1px solid #e8e8e8;
     cursor: pointer;
 }
+
+/* Botao reset*/
+#btnReset {
+    width: 50px;
+    height: 50px;
+    background-image: url('../img/reset.png');
+    border: nome;
+    cursor: pointer;
+    margin-left: 10px;
+}
+
+/* Rodape */
+footer{
+    background-color: #333;
+    color: #fff;
+    text-align: center;
+    padding: 10px;
+    position: fixed;
+    bottom: 0;
+    width: 100%;
+    height: 40px;
+    justify-content: space-between;
+    display: flex;
+}
+
+footer p {
+    color: #fff;
+    margin: 0px 0px 0px 0px;
+}
+footer img{
+    margin-right: 10px;
+}
