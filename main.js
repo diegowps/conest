@@ -1,5 +1,13 @@
 const { app, BrowserWindow, nativeTheme, Menu, shell, ipcMain } = require('electron/main')
 const path = require('node:path')
+//estabelecer conexão com o banco de dados
+
+
+//importacao do modulo de conexao
+const { dbConnected, desconectar } = require('./database.js')
+let dbcon = null
+/* status de conexao com o banco de dados - no momgodb é mais eficiente uma unica conexão aberta para usa-la quando necessario, fechar e reabrir a conexao constantemente aumenta a sobrecarga e reduz desempenho no servidor. */
+/* a variavel abaixo é usada para garantir que o banco de dados inicie desconectadao(evita abrir outras instancias)*/ 
 
 let win
 function createWindow() {
@@ -155,6 +163,19 @@ function reportWindow() {
 
 app.whenReady().then(() => {
     createWindow()
+
+    /*melhor local para criar atalhos de teclado e estabelecer conexao com banco de dados*/
+    //dbConnected()
+    /*importar o modulo de conexao com o banco de dados*/
+    ipcMain.on('db-connect', async(event, message) => {
+        /*a linha abaixo estabelece conexao com o banco*/
+        /*modelo mvc camadas*/
+
+        dbcon = await dbConnected()
+        console.log('Conectado ao banco de dados')
+    })
+
+
     app.on('activate', () => {
         if (BrowserWindow.getAllWindows().length === 0) {
             createWindow()
