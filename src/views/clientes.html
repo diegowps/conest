@@ -5,50 +5,86 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <meta http-equiv="Content-Security-Policy" content="default-src 'self'; script-src 'self' 'unsafe-inline'">
+    <title>Conest - Clientes</title>
     <link rel="stylesheet" href="../public/css/bootstrap.min.css">
     <link rel="stylesheet" href="../public/css/style.css">
-    <title>Conest - Clientes</title>
 </head>
 
 <body>
-                    <!--ID do cliente oculto -->
-                    
-                    <!--Nome-->
-                    <div class="col-md-8'>
-                        <label for="inputNameClient" class="form-label">Nome</label>
-                        <input class="form-control" type="text" spellcheck="false" id="inputNameClient" name="inputNameClient" required>
+    <div class="container">
+        <h1>Clientes</h1>
+        <form id="frmClient" class="mt-2 row g-3">
 
-                    </div>
-                    <!--CPF-->
-                    <!--Botões-->
-                    <div class="mt-5">
-                        <button type="submit" class="btn btn-primary" id="btnCreate">Adicionar</button>
-                        <button type="submit" class="btn btn-warning" id="btnUpdate">Editar</button>
-                        <button type="submit" class="btn btn-danger" id="btnDelete">Excluir</button>
-                        <button type="reset" class="btn" id="btnReset"> </button>
-                    </div>    
-
-                </form>
-
-                <div class="modal fade" id="modalCliente" tabindex="-1" role="dialog" aria-labelledby="modalClienteLabel" aria-hidden="true">
-                    <div class="modal-dialog" role="document">
-                        <div class="modal-content">
-                            <div class="modal-header">
-                                <h5 class="modal-title" id="modalClienteLabel">Novo Cliente</h5>
-                                <button type="button" class="close" data-dismiss="modal" aria-label="Close">
-                                    <span aria-hidden="true">&times;</span>
-                                </button>
-                            </div>
-                            <div class="modal-body
+            <!-- Buscar cliente -->
+            <div class="col-md-6">
+                <input type="text" class="form-control" id="inputCliente" maxlength="30" spellcheck="false">
             </div>
+            <div class="col-md-4">
+                <button class="btn btn-primary" id="btnRead">Buscar</button>
             </div>
-        </div>
+
+            <hr class="mt-4 border border-primary border -1">
+
+            <!-- Id do cliente (oculto) -->
+            <div class="col-md-6" id="idClient">
+                <input class="form-control" type="text" id="inputClient" placeholder="id">
+            </div>
+
+            <!-- Nome -->
+            <div class="col-md-8">
+                <label for="inputNameClient" class="form-label">Nome</label>
+                <input class="form-control" type="text" id="inputNameClient" placeholder="John Silver" spellcheck="false" required maxlength="50">
+            </div>
+
+            <!-- Fone -->
+            <div class="col-md-4">
+                <label for="inputPhoneClient" class="form-label">Telefone</label>
+                <input class="form-control" type="tel" id="inputPhoneClient" placeholder="+55 (12)34567-8910" spellcheck="false" required maxlength="13">
+            </div>
+
+            <!-- Email -->
+            <div class="col-md-8">
+                <label for="inputEmailClient" class="form-label">E-mail</label>
+                <input class="form-control" type="email" id="inputEmailClient" placeholder="john@conest.com" spellcheck="false" maxlength="50">
+            </div>
+            <!-- Endereço -->
+            <div class="col-md-4">
+                <label for="inputCepClient" class="form-label">CEP</label>
+                <input class="form-control" type="text" id="inputCepClient" placeholder="12345-678" pattern="\d{5}-\d{3}" spellcheck="false" maxlength="9">
+            </div>        
+            <div class="col-md-8">
+                <label for="inputRuaClient" class="form-label">Logradouro e Número</label>
+                <input class="form-control" type="text" id="inputRuaClient" placeholder="Av Santos Dumont, 90" spellcheck="false" maxlength="20">
+            </div>       
+            <div class="col-md-4">
+                <label for="inputComplementoClient" class="form-label">Complemento</label>
+                <input class="form-control" type="text" id="inputComplementoClient" placeholder="Casa/Apartamento" spellcheck="false" maxlength="10">
+            </div> 
+            <div class="col-md-4">
+                <label for="inputBairroClient" class="form-label">Bairro</label>
+                <input class="form-control" type="text" id="inputBairroClient" placeholder="Jardins" spellcheck="false" maxlength="10">
+            </div>  
+            <div class="col-md-4">
+                <label for="inputCidadeClient" class="form-label">Cidade</label>
+                <input class="form-control" type="text" id="inputCidadeClient" placeholder="Capital" spellcheck="false" maxlength="10">
+            </div>  
+            <div class="col-md-4">
+                <label for="inputEstadoClient" class="form-label">Estado</label>
+                <input class="form-control" type="text" id="inputEstadoClient" placeholder="UF" spellcheck="false" maxlength="2">
+            </div> 
+            <!-- Botões -->
+            <div class="mt-5">
+                <button type="submit" class="btn btn-success" id="btnCreate">Adicionar</button>
+                <button type="submit" class="btn btn-warning" id="btnUpdate">Editar</button>
+                <button type="submit" class="btn btn-danger" id="btnDelete">Excluir</button>
+                <button type="reset" class="btn" id="btnReset"></button>
+            </div>
+
+        </form>
     </div>
-
     <script src="../public/js/bootstrap.min.js"></script>
+    <script src="../public/js/script.js"></script>
     <script src="clientes.js"></script>
-    <script src="modalCliente.js"></script>
-    
 </body>
 
 </html>

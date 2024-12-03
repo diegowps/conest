@@ -5,19 +5,19 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <meta http-equiv="Content-Security-Policy" content="default-src 'self'; script-src 'self' 'unsafe-inline'">
-    <title>Conest - Fornecedor</title>
+    <title>Conest - Produtos</title>
     <link rel="stylesheet" href="../public/css/bootstrap.min.css">
     <link rel="stylesheet" href="../public/css/style.css">
 </head>
 
 <body>
     <div class="container">
-        <h1>Fornecedores</h1>
-        <form id="frmFornecedor" class="mt-2 row g-3">
+        <h1>Produtos</h1>
+        <form id="frmProduto" class="mt-2 row g-3">
 
             <!-- Buscar cliente -->
             <div class="col-md-6">
-                <input type="text" class="form-control" id="inputFornecedor" maxlength="30" spellcheck="false">
+                <input type="text" class="form-control" id="inputProduto" maxlength="30" spellcheck="false">
             </div>
             <div class="col-md-4">
                 <button class="btn btn-primary" id="btnRead">Buscar</button>
@@ -25,27 +25,27 @@
 
             <hr class="mt-4 border border-primary border -1">
 
-            <!-- Id do fornecedor (oculto) -->
-            <div class="col-md-6" id="idClient">
-                <input class="form-control" type="text" id="inputFornecedor" placeholder="id">
+            <!-- Id do produto (oculto) -->
+            <div class="col-md-6" id="idProduto">
+                <input class="form-control" type="text" id="inputProduto" placeholder="id">
             </div>
 
             <!-- Nome -->
             <div class="col-md-8">
-                <label for="inputRazaoFornecedor" class="form-label">Razão Social</label>
-                <input class="form-control" type="text" id="inputRazaoFornecedor" spellcheck="false" required maxlength="50">
+                <label for="inputProduto" class="form-label">Produto</label>
+                <input class="form-control" type="text" id="inputProduto" spellcheck="false" required maxlength="50" placeholder="Produto">
             </div>
 
-            <!-- Fone -->
+            <!-- bar code -->
             <div class="col-md-4">
-                <label for="inputPhoneFornecedor" class="form-label">Telefone</label>
-                <input class="form-control" type="tel" id="inputPhoneFornecedor" spellcheck="false" required maxlength="15">
+                <label for="inputBarcode" class="form-label">Código de barras</label>
+                <input class="form-control" type="tel" id="inputBarcode" spellcheck="false" required maxlength="15">
             </div>
 
-            <!-- Site -->
+            <!-- Preço -->
             <div class="col-md-8">
-                <label for="inputUrlFornecedor" class="form-label">Site</label>
-                <input class="form-control" type="url" id="inputUrlFornecedor" spellcheck="false" maxlength="50">
+                <label for="inputPreco" class="form-label">Preço</label>
+                <input class="form-control" type="monetario" id="inputPreco" spellcheck="false" maxlength="50">
             </div>
 
             <!-- Botões -->
@@ -59,7 +59,7 @@
         </form>
     </div>
     <script src="../public/js/bootstrap.min.js"></script>
-    <script src="fornecedores.js"></script>
+    <script src="produtos.js"></script>
 </body>
 
 </html>
