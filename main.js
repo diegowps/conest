@@ -1,54 +1,64 @@
-const { app, BrowserWindow, nativeTheme, Menu, shell, ipcMain } = require('electron/main')
+const { app, BrowserWindow, Menu, shell, ipcMain, dialog} = require('electron/main')
 const path = require('node:path')
-//estabelecer conexão com o banco de dados
 
-
-//importacao do modulo de conexao
-const { dbConnected, desconectar } = require('./database.js')
+// Importação do módulo de conexão
+const { dbConnect, desconectar } = require('./database.js')
+// status de conexão com o banco. No MongoDB é mais eficiente manter uma única conexão aberta durante todo o tempo de vida do aplicativo e usá-la quando necessário. Fechar e reabrir constantemente a conexão aumenta a sobrecarga e reduz o desempenho do servidor.
+// a variável abaixo é usada para garantir que o banco de dados inicie desconectado (evitar abrir outra instância)
 let dbcon = null
-/* status de conexao com o banco de dados - no momgodb é mais eficiente uma unica conexão aberta para usa-la quando necessario, fechar e reabrir a conexao constantemente aumenta a sobrecarga e reduz desempenho no servidor. */
-/* a variavel abaixo é usada para garantir que o banco de dados inicie desconectadao(evita abrir outras instancias)*/ 
 
+// importação do Schema Clientes da camada model
+const clienteModel = require('./src/models/Clientes.js')
+
+// importação do Schema Fornecedores da camada model
+const fornecedorModel = require('./src/models/Fornecedores.js')
+
+
+// janela principal
 let win
 function createWindow() {
-    nativeTheme.themeSource = 'light'
     win = new BrowserWindow({
-        width: 1010,
-        height: 700,
+        width: 800,
+        height: 600,
         webPreferences: {
             preload: path.join(__dirname, 'preload.js')
         }
     })
-    Menu.setApplicationMenu(Menu.buildFromTemplate(template))
+
+    // Menu personalizado (comentar para debugar)
+    //Menu.setApplicationMenu(Menu.buildFromTemplate(template))
+
     win.loadFile('./src/views/index.html')
 
-    //Botões
-    ipcMain.on('open-client', () => {      
-        clientWindow()  
+    // botões
+    ipcMain.on('open-client', () => {
+        clientWindow()
     })
-    ipcMain.on('open-supplier', () =>{
+
+    ipcMain.on('open-supplier', () => {
         supplierWindow()
     })
+
     ipcMain.on('open-product', () => {
         productWindow()
     })
+
     ipcMain.on('open-report', () => {
         reportWindow()
     })
 }
 
+// Janela sobre
 function aboutWindow() {
-    nativeTheme.themeSource = 'light'
     const main = BrowserWindow.getFocusedWindow()
     let about
     if (main) {
         about = new BrowserWindow({
-            width: 320,
-            height: 240,
+            width: 360,
+            height: 215,
             autoHideMenuBar: true,
             resizable: false,
             minimizable: false,
-            //titleBarStyle: 'hidden' // esconder a barra de estilo (ex.: totem de auto atendimento)
             parent: main,
             modal: true,
             webPreferences: {
@@ -56,25 +66,25 @@ function aboutWindow() {
             }
         })
     }
+
     about.loadFile('./src/views/sobre.html')
 
     ipcMain.on('close-about', () => {
-        console.log('Recebi a mensagem close-about')
         if (about && !about.isDestroyed()) {
             about.close()
         }
     })
 }
 
+// Janela clientes
 function clientWindow() {
-    nativeTheme.themeSource = 'light'
     const main = BrowserWindow.getFocusedWindow()
     let client
     if (main) {
         client = new BrowserWindow({
             width: 800,
             height: 600,
-            autoHideMenuBar: true,
+            //autoHideMenuBar: true,
             parent: main,
             modal: true,
             webPreferences: {
@@ -85,8 +95,8 @@ function clientWindow() {
     client.loadFile('./src/views/clientes.html')
 }
 
+// Janela fornecedores
 function supplierWindow() {
-    nativeTheme.themeSource = 'light'
     const main = BrowserWindow.getFocusedWindow()
     let supplier
     if (main) {
@@ -104,8 +114,8 @@ function supplierWindow() {
     supplier.loadFile('./src/views/fornecedores.html')
 }
 
+// Janela produtos
 function productWindow() {
-    nativeTheme.themeSource = 'light'
     const main = BrowserWindow.getFocusedWindow()
     let product
     if (main) {
@@ -120,11 +130,11 @@ function productWindow() {
             }
         })
     }
-    product.loadFile('./src/views/estoque.html')
+    product.loadFile('./src/views/produtos.html')
 }
 
+// Janela relatórios
 function reportWindow() {
-    nativeTheme.themeSource = 'light'
     const main = BrowserWindow.getFocusedWindow()
     let report
     if (main) {
@@ -142,45 +152,22 @@ function reportWindow() {
     report.loadFile('./src/views/relatorios.html')
 }
 
-function reportWindow() {
-    nativeTheme.themeSource = 'light'
-    const main = BrowserWindow.getFocusedWindow()
-    let report
-    if (main) {
-        report = new BrowserWindow({
-            width: 800,
-            height: 600,
-            autoHideMenuBar: true,
-            parent: main,
-            modal: true,
-            webPreferences: {
-                preload: path.join(__dirname, 'preload.js')
-            }
-        })
-    }
-    report.loadFile('./src/views/estoque.html')
-}
-
 app.whenReady().then(() => {
-    createWindow()
+    createWindow()   
+    // Melhor local para estabelecer a conexão com o banco de dados
+    // Importar antes o módulo de conexão no início do código
 
-    /*melhor local para criar atalhos de teclado e estabelecer conexao com banco de dados*/
-    //dbConnected()
-    /*importar o modulo de conexao com o banco de dados*/
-    ipcMain.on('db-connect', async(event, message) => {
-        /*a linha abaixo estabelece conexao com o banco*/
-        /*modelo mvc camadas*/
-
-        dbcon = await dbConnected()
-        //enviar ao renderenzador a mensagem de conexao para trocar o icone de conexao status banco de dados
-        //enviar mensagem para a janela principal
-        event.reply('db-connected', 'Conectado ao banco de dados')
-        console.log('Conectado ao banco de dados')
+    // conexão com o banco
+    ipcMain.on('db-connect', async (event, message) => {
+        // a linha abaixo estabelece a conexão com o banco
+        dbcon = await dbConnect()
+        // enviar ao renderizador uma mensagem para trocar o ícone do status do banco de dados
+        event.reply('db-message', "conectado")     
     })
-//desconectar do banco ao encerrar a aplicação
+
+    // desconectar do banco ao encerrar a aplicação
     app.on('before-quit', async () => {
-            await desconectar(dbcon)
-            console.log('Desconectado do banco de dados')
+        await desconectar(dbcon)
     })
 
     app.on('activate', () => {
@@ -201,28 +188,29 @@ const template = [
         label: 'Arquivo',
         submenu: [
             {
+                type: 'separator'
+            },
+            {
                 label: 'Sair',
                 accelerator: 'Alt+F4',
                 click: () => app.quit()
             }
         ]
     },
+
     {
         label: 'Zoom',
         submenu: [
             {
                 label: 'Aplicar zoom',
-                accelerator: 'Ctrl++',
                 role: 'zoomIn'
             },
             {
-                label: 'Reduzir zoom',
-                accelerator: 'Ctrl+-',
+                label: 'Reduzir',
                 role: 'zoomOut'
             },
             {
                 label: 'Restaurar o zoom padrão',
-                accelerator: 'Ctrl+0',
                 role: 'resetZoom'
             }
         ]
@@ -232,7 +220,7 @@ const template = [
         submenu: [
             {
                 label: 'Repositório',
-                click: () => shell.openExternal('https://github.com/diegowps/conest')
+                click: () => shell.openExternal('https://github.com/professorjosedeassis/conestv3')
             },
             {
                 label: 'Sobre',
@@ -241,3 +229,112 @@ const template = [
         ]
     }
 ]
+//****************************************************************   */
+//************************clientes**************************** */
+/*****************************************************************   */
+
+// CRUD Create >>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>
+// Recebimento dos dados do formulário do cliente
+ipcMain.on('new-client', async (event, cliente) => {
+    //teste de recebimento dos dados (Passo 2 - slide) Importante!
+    console.log(cliente)
+
+    // Passo 3 - slide (cadastrar os dados no banco de dados)
+    try {
+        // criar um novo objeto usando a classe modelo
+        const novoCliente = new clienteModel({
+            nomeCliente: cliente.nomeCli,
+            foneCliente: cliente.foneCli,
+            emailCliente: cliente.emailCli
+        })
+        // a linha abaixo usa a biblioteca moongoose para salvar
+        await novoCliente.save()
+
+        //confirmação de cliente adicionado no banco
+        dialog.showMessageBox({
+            type: 'info',
+            title: "Aviso",
+            message: "Cliente adicionado com sucesso",
+            buttons: ['OK']
+        })
+        // enviar uma resposta para o renderizador resetar o form
+        event.reply('reset-form')
+
+    } catch (error) {
+        console.log(error)
+    }
+})
+
+
+//****************************************************************   */
+//************************fornecedores**************************** */
+/*****************************************************************   */
+
+// CRUD Create >>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>
+// Recebimento dos dados do formulário do fornecedor
+ipcMain.on('new-fornecedor', async (event, fornecedor) => {
+    //teste de recebimento dos dados (Passo 2 - slide) Importante!
+    console.log(fornecedor)
+
+    // Passo 3 - slide (cadastrar os dados no banco de dados)
+    try {
+        // criar um novo objeto usando a classe modelo
+        const novoFornecedor = new fornecedorModel({
+            razaoFornecedor: fornecedor.razaoForn,
+            foneFornecedor: fornecedor.foneForn,
+            siteFornecedor: fornecedor.siteForn
+        })
+        // a linha abaixo usa a biblioteca moongoose para salvar
+        await novoFornecedor.save()
+
+        //confirmação de fornecedor adicionado no banco
+        dialog.showMessageBox({
+            type: 'info',
+            title: "Aviso",
+            message: "Fornecedor adicionado com sucesso",
+            buttons: ['OK']
+        })
+        // enviar uma resposta para o renderizador resetar o form
+        event.reply('reset-form')
+
+    } catch (error) {
+        console.log(error)
+    }
+})
+
+
+//****************************************************************   */
+//************************produtos**************************** */
+/*****************************************************************   */
+
+// CRUD Create >>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>
+// Recebimento dos dados do formulário do produto
+ipcMain.on('new-produto', async (event, produto) => {
+    //teste de recebimento dos dados (Passo 2 - slide) Importante!
+    console.log(produto)
+
+    // Passo 3 - slide (cadastrar os dados no banco de dados)
+    try {
+        // criar um novo objeto usando a classe modelo
+        const novoProduto = new produtoModel({
+            nomeProduto: produto.nomeForn,
+            foneProduto: produto.foneForn,
+            emailProduto: produto.emailForn
+        })
+        // a linha abaixo usa a biblioteca moongoose para salvar
+        await novoProduto.save()
+
+        //confirmação de fornecedor adicionado no banco
+        dialog.showMessageBox({
+            type: 'info',
+            title: "Aviso",
+            message: "Produto adicionado com sucesso",
+            buttons: ['OK']
+        })
+        // enviar uma resposta para o renderizador resetar o form
+        event.reply('reset-form')
+
+    } catch (error) {
+        console.log(error)
+    }
+})
