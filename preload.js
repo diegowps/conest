@@ -10,7 +10,9 @@ contextBridge.exposeInMainWorld('api', {
     janelaFornecedores: () => ipcRenderer.send('open-supplier'),
     janelaProdutos: () => ipcRenderer.send('open-product'),
     janelaRelatorios: () => ipcRenderer.send('open-report'),
-    novoCliente: (cliente) => ipcRenderer.send('new-client', cliente),
+    novoCliente: (cliNomeCad) => ipcRenderer.send('new-client', cliNomeCad),
+    buscarCliente: (cliNome) => ipcRenderer.send('search-client', cliNome),
+    renderizarCliente: (dadosCliente) => ipcRenderer.on('data-client', dadosCliente),
     novoFornecedor: (fornecedor) => ipcRenderer.send('new-fornecedor', fornecedor),
     resetarFormulario: (args) => ipcRenderer.on('reset-form', args)    
 })
