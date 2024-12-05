@@ -78,10 +78,6 @@ function buscarCliente(){
     
 }
 /* passo 6 slide - renderizacao dos dados do cliente no formulario*/
-arrayCliente = dadosCliente
-//teste cliente
-console.log(arrayCliente)
-
 
 // Reset Form >>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>
 api.resetarFormulario((args) => {
