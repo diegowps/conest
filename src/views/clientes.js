@@ -66,13 +66,11 @@ function buscarCliente(){
         console.log(clienteRender)
         arrayCliente = clienteRender
 
-        console.log(arrayCliente)
-
         arrayCliente.forEach((c) => {
-           document.getElementById('inputNameClient').value = c.nomeCli
-              document.getElementById('inputPhoneClient').value = c.foneCli
-                document.getElementById('inputEmailClient').value = c.emailCli
-                document.getElementById('inputCepClient').value = c.cepCli
+        document.getElementById('inputNameClient').value = c.nomeCliente
+        document.getElementById('inputPhoneClient').value = c.foneCliente
+        document.getElementById('inputEmailClient').value = c.emailCliente
+        document.getElementById('inputCepClient').value = c.cepCliente
         })
     })
     
