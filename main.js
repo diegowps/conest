@@ -220,7 +220,7 @@ const template = [
         submenu: [
             {
                 label: 'Repositório',
-                click: () => shell.openExternal('https://github.com/professorjosedeassis/conestv3')
+                click: () => shell.openExternal('https://github.com/diegowps')
             },
             {
                 label: 'Sobre',
@@ -264,7 +264,41 @@ ipcMain.on('new-client', async (event, cliente) => {
         console.log(error)
     }
 })
+//fim do crud create<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<
 
+/********CRUD Read********************* */
+ipcMain.on('search-client', async (event, cliNome) => {
+    // teste do recebimento do nome do cliente
+    console.log(cliNome)
+
+    // Passo 2 - slide (buscar os dados no banco de dados)
+    try {
+        // a linha abaixo usa a biblioteca moongoose para buscar
+        const dadosCliente = await clienteModel.find
+        ({ nomeCliente: new RegExp(cliNome, 'i') })
+        console.log(dadosCliente) //teste de retorno dos dados passo 3 e 4
+
+
+         //teste de retorno dos dados passo 3
+//find() -> buscar no banco(moongoose)
+//RegExp -> filtro pelo nome cliente 'i' insensitive (maiusculo ou minusculo) 
+//Atenção: nomeCliente > model | cliNome > renderizador
+//Passos 3 e 4 - 
+        // Passo 3 - slide (enviar os dados para o renderizador) pesquisar banco de dados pelo nome
+        // passo 5 slide > enviar dados para o renderizador (JSON.stringify > transforma em string JSON)
+    event.reply('data-client', JSON.stringify(dadosCliente))
+
+
+
+    } catch (error) {
+        console.log(error)
+    }    
+})
+
+
+
+
+/********fim CRUD read */
 
 //****************************************************************   */
 //************************fornecedores**************************** */
