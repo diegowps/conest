@@ -3,6 +3,11 @@
  * clientes.html
  */
 
+
+//array usado nos metodos para manipulacao da estrutura de dados (para armazenar os dados dos clientes)
+let arrayCliente = []
+
+
 // CRUD Create >>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>
 
 //Passo 1 - slide (capturar os dados dos inputs do form)
@@ -32,6 +37,51 @@ formCliente.addEventListener('submit', async (event) => {
 })
 // Fim CRUD Create <<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<
 
+// CRUD Read >>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>
+
+// Passo 1 - slide (receber os dados do main)
+/*api.listarClientes((clientes) => {
+    // Passo 2 - slide (iterar sobre os dados recebidos)
+    let listaClientes = document.getElementById('listaClientes')
+    listaClientes.innerHTML = ""
+    clientes.forEach(cliente => {
+        // Passo 3 - slide (criar um elemento para cada item da lista)
+        let itemLista = document.createElement('li')
+        itemLista.textContent = `${cliente.nomeCli} - ${cliente.foneCli} - ${cliente.emailCli} - ${cliente.cepCli}`
+        // Passo 4 - slide (adicionar o item à lista)
+        listaClientes.appendChild(itemLista)
+    })
+})*/
+
+function buscarCliente(){
+    // Passo 1 - slide (receber os dados do main)
+    let cliNome = document.getElementById('searchClient').value
+    console.log(cliNome) //teste do passo 1
+    api.buscarCliente(cliNome)
+        // Passo 2 - slide (iterar sobre os dados recebidos)
+    api.renderizarCliente((event, dadosCliente) => {
+        console.log(dadosCliente)
+        // passo 6 slide - renderizacao dos dados do cliente no formulario
+        const clienteRender = JSON.parse(dadosCliente)
+        console.log(clienteRender)
+        arrayCliente = clienteRender
+
+        console.log(arrayCliente)
+
+        arrayCliente.forEach((c) => {
+           document.getElementById('inputNameClient').value = c.nomeCli
+              document.getElementById('inputPhoneClient').value = c.foneCli
+                document.getElementById('inputEmailClient').value = c.emailCli
+                document.getElementById('inputCepClient').value = c.cepCli
+        })
+    })
+    
+}
+/* passo 6 slide - renderizacao dos dados do cliente no formulario*/
+arrayCliente = dadosCliente
+//teste cliente
+console.log(arrayCliente)
+
 
 // Reset Form >>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>
 api.resetarFormulario((args) => {
@@ -40,6 +90,6 @@ api.resetarFormulario((args) => {
     document.getElementById('inputPhoneClient').value = ""
     document.getElementById('inputEmailClient').value = ""
     document.getElementById('inputCepClient').value = ""
-})
-
-// Fim - reset form <<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<
+}
+)
+// Fim Reset Form <<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<
