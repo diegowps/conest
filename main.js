@@ -1,5 +1,7 @@
+
 const { app, BrowserWindow, Menu, shell, ipcMain, dialog} = require('electron/main')
 const path = require('node:path')
+
 
 // Importação do módulo de conexão
 const { dbConnect, desconectar } = require('./database.js')
@@ -351,9 +353,9 @@ ipcMain.on('new-produto', async (event, produto) => {
     try {
         // criar um novo objeto usando a classe modelo
         const novoProduto = new produtoModel({
-            nomeProduto: produto.nomeForn,
-            foneProduto: produto.foneForn,
-            emailProduto: produto.emailForn
+            nomeProduto: produto.nomeProd,
+            barProduto: produto.barProd,
+            precoProduto: produto.precoProd
         })
         // a linha abaixo usa a biblioteca moongoose para salvar
         await novoProduto.save()
@@ -372,3 +374,20 @@ ipcMain.on('new-produto', async (event, produto) => {
         console.log(error)
     }
 })
+/* >>>>>>>>API VIACEP<<<<<<<<<<<<<<<<<<<<<<<<<<<*/
+
+
+const https = require('https');
+
+
+ipcMain.handle('fetch-viacep', async (_, cep) => {
+  return new Promise((resolve, reject) => {
+    const url = `https://viacep.com.br/ws/${cep}/json/`;
+    https.get(url, (res) => {
+      let data = '';
+      res.on('data', (chunk) => (data += chunk));
+      res.on('end', () => resolve(JSON.parse(data)));
+    }).on('error', (err) => reject(err));
+  });
+});
+ 
