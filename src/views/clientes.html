@@ -38,9 +38,13 @@
             </div>
 
             <!-- Fone -->
+            <div class="col-md-2">
+                <label for="inputPhoneDddClient" class="form-label">DDD</label>
+                <input class="form-control" type="telDdd" id="inputPhoneDddClient" placeholder="+55 (12)" spellcheck="false" required maxlength="13">
+            </div>
             <div class="col-md-4">
                 <label for="inputPhoneClient" class="form-label">Telefone</label>
-                <input class="form-control" type="tel" id="inputPhoneClient" placeholder="+55 (12)34567-8910" spellcheck="false" required maxlength="13">
+                <input class="form-control" type="tel" id="inputPhoneClient" placeholder="34567-8910" spellcheck="false" required maxlength="13">
             </div>
 
             <!-- Email -->
@@ -71,7 +75,10 @@
             </div>  
             <div class="col-md-4">
                 <label for="inputEstadoClient" class="form-label">Estado</label>
-                <input class="form-control" type="text" id="inputEstadoClient" placeholder="UF" spellcheck="false" maxlength="2">
+                <select class="form-control" id="inputEstadoClient" placeholder="UF" spellcheck="false" maxlength="2">
+                    <option value="">Selecione</option>
+                  </select>
+
             </div> 
             <!-- Botões -->
             <div class="mt-5">
